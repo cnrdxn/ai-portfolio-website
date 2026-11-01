@@ -115,7 +115,7 @@ test('desktop and mobile layouts have no horizontal overflow after fonts load', 
 
 test('capability neurons rotate continuously and their connectors follow them', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  const neuron = page.locator('[data-capability-neuron="2"]');
+  const neuron = page.locator('[data-capability-neuron="0"]');
   const firstPosition = await neuron.getAttribute('transform');
   await expect.poll(() => neuron.getAttribute('transform')).not.toBe(firstPosition);
   await page.getByRole('button', { name: 'Explore AI systems', exact: true }).hover();
@@ -186,7 +186,7 @@ test('capability details support keyboard and mobile tap', async ({ page }) => {
 
 test('orb supports dragging and release outside its bounds, then resumes idle motion', async ({ page }) => {
   const orb = page.locator('[data-orb-mode]');
-  const neuron = page.locator('[data-capability-neuron="2"]');
+  const neuron = page.locator('[data-capability-neuron="0"]');
   const surface = page.locator('[data-orb-mode] > .neural-hit-area');
   const bounds = (await surface.boundingBox())!;
   const initialPosition = await neuron.getAttribute('transform');
