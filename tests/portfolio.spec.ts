@@ -104,11 +104,11 @@ test('desktop and mobile layouts have no horizontal overflow after fonts load', 
 
     expect(dimensions.document, `document overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
     expect(dimensions.body, `body overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
-    const headingFits = await page.locator('.hero-first-line').evaluate(element => {
+    const headingFits = await page.locator('.hero-title-line').evaluateAll(elements => elements.every(element => {
       const line = element.getBoundingClientRect();
       const column = element.closest('.hero-copy')!.getBoundingClientRect();
       return line.left >= column.left - 1 && line.right <= column.right + 1;
-    });
+    }));
     expect(headingFits, `headline clipped at ${width}px`).toBe(true);
   }
 });
@@ -244,6 +244,7 @@ test('every section stays visible while scrolling and after reveal classes chang
 
 test('header remains visible and section links scroll below it', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('smooth');
   for (const [label, id] of [['Overview', 'overview'], ['Work', 'work'], ['Experience', 'experience'], ['About', 'about'], ['Contact', 'contact']]) {
     await page.getByRole('navigation', { name: 'Main navigation', exact: true }).getByRole('link', { name: label, exact: true }).click();
@@ -253,5 +254,18 @@ test('header remains visible and section links scroll below it', async ({ page }
       const header = await page.locator('.site-header').boundingBox();
       return !!target && !!header && Math.abs(header.y) < 1 && target.y >= header.height - 1 && target.y < 500;
     }).toBe(true);
+  }
+});
+
+
+test('hero keeps its two-line layout and section subtitles sit below titles', async ({ page }) => {
+  await expect(page.locator('.hero-title-line')).toHaveText(['BUILDING AI PRODUCTS.', 'IDEA TO LAUNCH.']);
+  for (const [id, subtitle] of [['overview', '.section-description'], ['work', '.section-heading > p'], ['experience', '.section-heading > p'], ['contact', '.contact-description']]) {
+    const section = page.locator(`section#${id}`);
+    await section.scrollIntoViewIfNeeded();
+    const heading = (await section.getByRole('heading', { level: 2 }).boundingBox())!;
+    const description = (await section.locator(subtitle).boundingBox())!;
+    expect(description.y).toBeGreaterThanOrEqual(heading.y + heading.height);
+    expect(Math.abs(description.x - heading.x)).toBeLessThan(1);
   }
 });

@@ -81,7 +81,7 @@ export default function App() {
       <section className="hero" id="top">
         <div className="hero-grid"><div className="hero-copy">
           <p className="eyebrow"><span className="status-dot" />CONNOR DIXON / AI SYSTEMS ENGINEER</p>
-          <h1 className="hero-title"><span className="hero-first-line">BUILDING AI PRODUCTS.</span><br /><span className="outline-text">IDEA TO LAUNCH.</span></h1>
+          <h1 className="hero-title"><span className="hero-title-line hero-first-line">BUILDING <span className="hero-product-phrase">AI PRODUCTS.</span></span><br /><span className="hero-title-line outline-text">IDEA TO LAUNCH.</span></h1>
           <p className="hero-description">I’m Connor. I build AI-powered products that solve complex problems, taking them from the initial ask to a finished product as the sole engineer.</p>
           <div className="hero-actions"><a className="button button-primary" href="#work">Explore the work <Arrow /></a><a className="text-link" href="#about">A little about me <Arrow diagonal /></a></div>
           <div id="capability-details" className="capability-panel-slot" />

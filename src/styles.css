@@ -20,6 +20,7 @@
   --gutter: clamp(1.25rem, 5.15vw, 5.5rem);
   --content-width: 1500px;
   --header-height: 84px;
+  --section-title-size: clamp(2.55rem, 5.355vw, 5.1rem);
 }
 
 *,
@@ -353,14 +354,16 @@ a:focus-visible {
   max-width: 900px;
   margin: 0;
   font-family: 'Oswald', sans-serif;
-  font-size: clamp(2.5rem, 4.65vw, 5.5rem);
+  font-size: clamp(2.875rem, 5.3475vw, 6.325rem);
   font-weight: 500;
   letter-spacing: -0.055em;
   line-height: 1.05;
   text-transform: uppercase;
 }
 
-.hero-first-line { display: inline-block; white-space: nowrap; }
+.hero-title-line { display: inline-block; white-space: nowrap; }
+.hero-first-line { max-width: 100%; white-space: normal; }
+.hero-product-phrase { white-space: nowrap; }
 
 .outline-text {
   display: inline-block;
@@ -543,7 +546,8 @@ a:focus-visible {
 
 .section-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 1.4rem;
   column-gap: clamp(2rem, 6vw, 8rem);
   align-items: end;
   margin-bottom: clamp(2.5rem, 5vw, 5rem);
@@ -574,7 +578,7 @@ a:focus-visible {
 .contact-panel h2 {
   margin: 0;
   font-family: 'Oswald', sans-serif;
-  font-size: clamp(3rem, 6.3vw, 6rem);
+  font-size: var(--section-title-size);
   font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -582,11 +586,11 @@ a:focus-visible {
 }
 
 .section-heading > p {
-  max-width: 370px;
-  grid-column: 2;
-  margin: 0 0 0.2rem;
+  max-width: 650px;
+  grid-column: 1;
+  margin: 0;
   color: var(--muted);
-  font-size: 0.93rem;
+  font-size: 1rem;
   line-height: 1.8;
 }
 
@@ -989,7 +993,7 @@ a:focus-visible {
 .contact-panel {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.8fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
   gap: 2rem 5rem;
   padding: clamp(2rem, 5vw, 5rem);
@@ -1017,7 +1021,7 @@ a:focus-visible {
 
 .contact-panel h2 {
   max-width: 760px;
-  font-size: clamp(3.4rem, 7vw, 7rem);
+  font-size: var(--section-title-size);
 }
 
 .contact-panel h2 em {
@@ -1026,8 +1030,9 @@ a:focus-visible {
 }
 
 .contact-description {
-  max-width: 390px;
-  margin: 0 0 1.6rem;
+  grid-column: 1;
+  max-width: 650px;
+  margin: 0;
   color: var(--muted);
   line-height: 1.8;
 }
@@ -1052,7 +1057,7 @@ a:focus-visible {
 }
 
 .contact-actions {
-  grid-column: 2;
+  grid-column: 1;
   margin-top: 0;
 }
 
@@ -1386,7 +1391,8 @@ a:focus-visible {
   .hero { min-height: auto; padding-top: 48px; padding-bottom: 1.4rem; }
   .hero-grid { flex: 0 0 auto; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .hero-copy { padding-bottom: 0; }
-  .hero-title { font-size: clamp(2rem, 10vw, 4.5rem); }
+
+  .hero-title { font-size: clamp(2.3rem, 11.5vw, 5.175rem); }
   .hero-description { max-width: 500px; margin-top: 1.5rem; }
   .hero-actions { margin-top: 1.65rem; }
   .hero-visual { width: min(100%, 520px); justify-self: center; margin: 0.5rem auto 0; }
@@ -1419,15 +1425,16 @@ a:focus-visible {
 }
 
 @media (max-width: 540px) {
-  :root { --header-height: 68px; }
+  :root { --header-height: 68px; --section-title-size: clamp(2.38rem, 10.2vw, 3.655rem); }
   body { font-size: 14px; }
   .site-header { height: 68px; }
   .wordmark { gap: 0.55rem; font-size: 0.68rem; }
   .brand-mark { width: 20px; height: 20px; }
   .brand-mark::before { left: -4px; width: 27px; }
   .hero { padding-top: 40px; }
-  .hero-title { font-size: clamp(1.9rem, 9.8vw, 3.3rem); letter-spacing: -0.06em; }
+
   .eyebrow { margin-bottom: 1.5rem; font-size: 0.58rem; }
+  .hero-title { font-size: clamp(2.185rem, 11.27vw, 3.795rem); letter-spacing: -0.06em; }
   .hero-description { font-size: 0.9rem; }
   .hero-highlights { gap: 1.2rem; }
   .hero-highlight-label { font-size: 0.52rem; }
@@ -1442,7 +1449,7 @@ a:focus-visible {
   .section-shell { padding-block: 2.5rem; }
   .section-heading { margin-bottom: 2.25rem; }
   .section-heading h2,
-  .about-copy h2 { font-size: clamp(2.8rem, 12vw, 4.3rem); }
+  .about-copy h2 { font-size: var(--section-title-size); }
   .section-heading > p { font-size: 0.86rem; }
   .project-grid { grid-template-columns: minmax(0, 1fr); gap: 2.8rem; }
   .project-card--featured { grid-column: 1; }
@@ -1471,7 +1478,7 @@ a:focus-visible {
 
   .contact-panel { gap: 1.2rem; padding: 1.6rem 1.25rem 1.8rem; }
   .contact-panel::before { left: 1.25rem; width: 54px; }
-  .contact-panel h2 { font-size: clamp(3.15rem, 13vw, 4.6rem); }
+
   .contact-description { font-size: 0.87rem; }
   .contact-actions { gap: 1.1rem; }
   .site-footer { grid-template-columns: 1fr auto; gap: 1rem; padding: 1.25rem var(--gutter) 1.5rem; }
