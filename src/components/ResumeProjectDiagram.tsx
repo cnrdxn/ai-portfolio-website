@@ -8,7 +8,7 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
   const figure = resolver ? 'FIG.02' : fraud ? 'FIG.03' : 'FIG.01'
   const heading = resolver ? 'ITERATIVE TOPIC RESOLVER' : fraud ? 'WIFI FRAUD DETECTION' : 'ENTERPRISE AI ANSWERS'
   const description = resolver
-    ? 'Iterative Topic Resolver categorizing technician notes with a rubric, human review for ambiguous cases, and resumable Azure OpenAI batch jobs.'
+    ? 'Iterative Topic Resolver categorizing technician notes with a rubric, human review for ambiguous cases, and resumable cloud inference batch jobs.'
     : fraud
       ? 'WiFi Sharing Fraud Detection moving subject activity through production model pipelines to flagged accounts and measured revenue recovery.'
       : 'Enterprise AI answers platform routing employee questions through contextual rewriting, vector retrieval, grounded answers, and release evaluation.'
@@ -52,7 +52,7 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
       </g>
 
       {resolver ? <>
-        {/* Categorical scoring rubric guides each Azure OpenAI batch run. */}
+        {/* Categorical scoring rubric guides each cloud inference batch run. */}
         <path d={`M300 96V130`} fill="none" stroke="currentColor" strokeWidth="1.1" markerEnd={`url(#${id}-arrow)`} />
         <path d={`M156 171H234`} fill="none" stroke="currentColor" strokeWidth="1.2" markerEnd={`url(#${id}-arrow)`} />
         <path d={`M366 163H444`} fill="none" stroke="currentColor" strokeWidth="1.2" markerEnd={`url(#${id}-arrow)`} />
@@ -78,7 +78,7 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
           <text x="300" y="82" fontSize="7" letterSpacing=".2" opacity=".65">DECISIVE-FIRST RANKING</text>
           <text x="90" y="165" fontSize="9" letterSpacing=".55">TECHNICIAN NOTES</text>
           <text x="90" y="182" fontSize="7" letterSpacing=".25" opacity=".65">FREE-TEXT ISSUES</text>
-          <text x="300" y="159" fontSize="8.5" letterSpacing=".4">AZURE OPENAI</text>
+          <text x="300" y="159" fontSize="8.5" letterSpacing=".4">BATCH INFERENCE</text>
           <text x="300" y="174" fontSize="6.5" letterSpacing=".15" opacity=".68">BATCH · ~316K</text>
           <text x="300" y="186" fontSize="6.5" letterSpacing=".15" opacity=".68">CLASSIFICATIONS</text>
           <text x="510" y="165" fontSize="8.5" letterSpacing=".35">ISSUE CATEGORIES</text>

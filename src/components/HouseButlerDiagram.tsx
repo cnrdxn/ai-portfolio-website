@@ -95,7 +95,7 @@ export function HouseButlerDiagram() {
       </g>
       <g fill="currentColor" fontFamily="monospace" textAnchor="middle">
         <text x="327" y="163" fontSize="14" letterSpacing="1.2">BUTLER</text>
-        <text x="327" y="179" fontSize="6.7" letterSpacing=".2" opacity=".66">OPENAI · FUNCTION CALLS</text>
+        <text x="327" y="179" fontSize="6.7" letterSpacing=".2" opacity=".66">LLM · FUNCTION CALLS</text>
       </g>
       <circle cx="224" cy="156" r="2.5" fill="currentColor" />
       <circle cx="376" cy="156" r="2.5" fill="currentColor" />

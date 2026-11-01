@@ -44,11 +44,11 @@ export const projects: Project[] = [
     number: '02',
     title: 'Iterative Topic Resolver',
     category: 'BATCH CLASSIFICATION / LLM SYSTEMS',
-    badge: 'AZURE OPENAI / BATCH PIPELINE',
+    badge: 'LLM / BATCH PIPELINE',
     role: 'Sole developer, Iterative Topic Resolver',
     summary:
-      'I built an Azure OpenAI workflow that turns topic definitions into pipeline-ready example files, reducing turnaround from two weeks to one day.',
-    tags: ['Azure OpenAI', 'Batch classification', 'Human review', 'Checkpointing'],
+      'I built a cloud LLM workflow that turns topic definitions into pipeline-ready example files, reducing turnaround from two weeks to one day.',
+    tags: ['Cloud LLMs', 'Batch classification', 'Human review', 'Checkpointing'],
     theme: 'sand',
     metrics: [
       { value: '~316K', label: 'classifications across production runs' },
@@ -91,7 +91,7 @@ export const projects: Project[] = [
     badge: 'PERSONAL PROJECT',
     role: 'Independent project',
     summary: 'A Python voice assistant that turns spoken requests into home automation and personal-service actions through a tool-calling AI brain.',
-    tags: ['Python', 'Function calling', 'WebSockets', 'OpenAI', 'ElevenLabs', 'Govee / Tuya'],
+    tags: ['Python', 'Function calling', 'WebSockets', 'LLM services', 'ElevenLabs', 'Govee / Tuya'],
     theme: 'mint',
     metrics: [
       { value: '5 skills', label: 'registered service integrations' },
@@ -118,7 +118,7 @@ export const experience: {
     role: 'Lead AI Systems Engineer',
     organization: 'Spectrum',
     description: 'Technical lead and sole engineer on the Enterprise AI Answers Platform, with ownership of architecture, software delivery, and cloud deployment. Sole developer of the Iterative Topic Resolver.',
-    tags: ['LangGraph', 'RAG', 'Azure OpenAI', 'GCP', 'Terraform'],
+    tags: ['LangGraph', 'RAG', 'Cloud LLMs', 'GCP', 'Terraform'],
   },
   {
     period: 'Summer 2022 – Spring 2026',
