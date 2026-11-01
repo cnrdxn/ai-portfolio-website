@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('shows the main portfolio heading and four projects', async ({ page }) => {
-  await expect(page.getByRole('heading', { level: 1, name: 'AI SYSTEMS. IDEA TO LAUNCH.' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'BUILDING AI PRODUCTS. IDEA TO LAUNCH.' })).toBeVisible();
 
   const projectButtons = page.getByRole('button', { name: /Open .* project details/ });
   await expect(projectButtons).toHaveCount(4);
@@ -104,6 +104,12 @@ test('desktop and mobile layouts have no horizontal overflow after fonts load', 
 
     expect(dimensions.document, `document overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
     expect(dimensions.body, `body overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
+    const headingFits = await page.locator('.hero-first-line').evaluate(element => {
+      const line = element.getBoundingClientRect();
+      const column = element.closest('.hero-copy')!.getBoundingClientRect();
+      return line.left >= column.left - 1 && line.right <= column.right + 1;
+    });
+    expect(headingFits, `headline clipped at ${width}px`).toBe(true);
   }
 });
 
@@ -233,4 +239,19 @@ test('every section stays visible while scrolling and after reveal classes chang
   expect(await page.locator('.reveal').evaluateAll(elements =>
     elements.every(element => getComputedStyle(element).opacity === '1'),
   )).toBe(true);
+});
+
+
+test('header remains visible and section links scroll below it', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('smooth');
+  for (const [label, id] of [['Overview', 'overview'], ['Work', 'work'], ['Experience', 'experience'], ['About', 'about'], ['Contact', 'contact']]) {
+    await page.getByRole('navigation', { name: 'Main navigation', exact: true }).getByRole('link', { name: label, exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`#${id}$`));
+    await expect.poll(async () => {
+      const target = await page.locator(`section#${id}`).boundingBox();
+      const header = await page.locator('.site-header').boundingBox();
+      return !!target && !!header && Math.abs(header.y) < 1 && target.y >= header.height - 1 && target.y < 500;
+    }).toBe(true);
+  }
 });

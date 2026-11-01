@@ -73,7 +73,7 @@ export default function App() {
     <header className="site-header">
       <a className="wordmark" href="#top" onClick={() => setMenuOpen(false)} aria-label="Connor Dixon home"><span className="brand-mark" aria-hidden="true" /><span>CONNOR DIXON</span></a>
       <nav className="desktop-nav" aria-label="Main navigation">{navigation.map(([id, label]) => <a key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined}>{label}</a>)}</nav>
-      <a className="header-cta" href={`mailto:${profile.email}`}>Let’s talk <Arrow diagonal /></a>
+      <a className="header-cta" href="#contact">Let’s talk <Arrow diagonal /></a>
       <button className="menu-toggle" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? 'Close −' : 'Menu +'}</button>
     </header>
     {menuOpen && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation">{navigation.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}<Arrow /></a>)}</nav>}
@@ -81,7 +81,7 @@ export default function App() {
       <section className="hero" id="top">
         <div className="hero-grid"><div className="hero-copy">
           <p className="eyebrow"><span className="status-dot" />CONNOR DIXON / AI SYSTEMS ENGINEER</p>
-          <h1 className="hero-title">AI SYSTEMS.<br /><span className="outline-text">IDEA TO LAUNCH.</span></h1>
+          <h1 className="hero-title"><span className="hero-first-line">BUILDING AI PRODUCTS.</span><br /><span className="outline-text">IDEA TO LAUNCH.</span></h1>
           <p className="hero-description">I’m Connor. I build AI-powered products that solve complex problems, taking them from the initial ask to a finished product as the sole engineer.</p>
           <div className="hero-actions"><a className="button button-primary" href="#work">Explore the work <Arrow /></a><a className="text-link" href="#about">A little about me <Arrow diagonal /></a></div>
           <div id="capability-details" className="capability-panel-slot" />
@@ -89,7 +89,7 @@ export default function App() {
         <div className="hero-bottom"><span className="location">BASED IN DENVER, COLORADO ↗</span><a className="hero-index" href="#overview">SCROLL TO EXPLORE ↓</a></div>
       </section>
       <section className="section-shell value-section" id="overview" aria-labelledby="overview-title">
-        <div className="section-heading reveal"><div><p className="section-kicker">01 / BUILT AROUND THE PROBLEM</p><h2 id="overview-title">I build products<br />that solve problems.</h2></div><p>I take ownership of the full product, including the interface, application, and infrastructure needed to ship it.</p></div>
+        <div className="section-heading section-heading--stacked reveal"><div><p className="section-kicker">01 / BUILT AROUND THE PROBLEM</p><h2 id="overview-title">I build products<br />that solve problems.</h2><p className="section-description">I take ownership of the full product, including the interface, application, and infrastructure needed to ship it.</p></div></div>
           <div className="hero-highlights">
             <article className="hero-highlight reveal"><p className="hero-highlight-label">ENTERPRISE AI / SPECTRUM</p><h3>Knowledge, made usable.</h3><p>I architected and shipped an enterprise AI answers platform in 10 weeks, bringing company knowledge into grounded, conversational tools.</p><a className="text-link" href="#work">Explore the projects <Arrow diagonal /></a></article>
             <article className="hero-highlight reveal"><p className="hero-highlight-label">APPLIED MACHINE LEARNING</p><h3>Data that drives action.</h3><p>My fraud detection work helped identify revenue-leakage accounts and recover $350K+ annually.</p><a className="text-link" href="#experience">See my background <Arrow diagonal /></a></article>
