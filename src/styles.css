@@ -209,6 +209,7 @@ a:focus-visible {
 
 .header-cta {
   display: inline-flex;
+  gap: 0.65rem;
   min-height: 40px;
   align-items: center;
   justify-content: center;
