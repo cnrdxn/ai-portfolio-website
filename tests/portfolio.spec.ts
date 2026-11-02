@@ -270,24 +270,39 @@ test('hero shows the updated headline and section subtitles sit below titles', a
   }
 });
 
-test('capability panel follows the orb only on mobile', async ({ page }) => {
-  for (const width of [360, 390, 760, 1440]) {
-    await page.setViewportSize({ width, height: 1000 });
-    await page.evaluate(() => document.fonts.ready);
-    const visual = await page.locator('.hero-visual').boundingBox();
-    const panel = await page.locator('#capability-details').boundingBox();
-    const actions = await page.locator('.hero-actions').boundingBox();
-    expect(visual).not.toBeNull();
-    expect(panel).not.toBeNull();
-    if (width <= 760) {
-      expect(panel!.y).toBeGreaterThanOrEqual(visual!.y + visual!.height);
-      expect(visual!.y).toBeGreaterThanOrEqual(actions!.y + actions!.height);
-    } else {
-      expect(panel!.x + panel!.width).toBeLessThanOrEqual(visual!.x);
-      expect(panel!.y).toBeGreaterThan(actions!.y);
+for (const fallbackFonts of [false, true]) {
+  test(`capability panel follows the orb only on mobile${fallbackFonts ? ' with fallback fonts' : ''}`, async ({ page }) => {
+    if (fallbackFonts) {
+      await page.addStyleTag({ content: '.hero-grid * { font-family: Arial, sans-serif !important; }' });
     }
-  }
-});
+    for (const width of [360, 390, 760, 1440]) {
+      await test.step(`${width}px viewport`, async () => {
+        await page.setViewportSize({ width, height: 1000 });
+        await page.evaluate(() => document.fonts.ready.then(() => undefined));
+        // Read every rectangle in one browser frame. Separate round trips can
+        // mix layouts from before and after responsive font loading/reflow.
+        await expect.poll(() => page.evaluate(() => {
+          const visual = document.querySelector('.hero-visual')!.getBoundingClientRect();
+          const panel = document.querySelector('#capability-details')!.getBoundingClientRect();
+          const actions = document.querySelector('.hero-actions')!.getBoundingClientRect();
+          if (window.innerWidth <= 760) {
+            return {
+              panelPlacedCorrectly: panel.top >= visual.bottom - 1,
+              orbPlacedCorrectly: visual.top >= actions.bottom - 1,
+            };
+          }
+          return {
+            panelPlacedCorrectly: panel.right <= visual.left + 1,
+            orbPlacedCorrectly: panel.top > actions.top,
+          };
+        }), { message: `Hero layout at ${width}px` }).toEqual({
+          panelPlacedCorrectly: true,
+          orbPlacedCorrectly: true,
+        });
+      });
+    }
+  });
+}
 
 test('mobile projects have borders and vertically centered scrollable dialogs', async ({ page }) => {
   for (const width of [360, 390]) {
