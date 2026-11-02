@@ -363,6 +363,7 @@ a:focus-visible {
 
 .hero-title-line { display: inline-block; white-space: nowrap; }
 .hero-first-line { max-width: 100%; white-space: normal; }
+.hero-title-line.outline-text { max-width: 100%; white-space: normal; }
 .hero-product-phrase { white-space: nowrap; }
 
 .outline-text {
@@ -1487,8 +1488,8 @@ a:focus-visible {
   .site-footer p { grid-column: 1 / -1; grid-row: 2; justify-self: start; text-align: left; }
   .site-footer > a:last-child { grid-column: 2; grid-row: 1; font-size: 0.51rem; }
   .back-to-top { right: 0.8rem; bottom: 0.8rem; width: 40px; height: 40px; }
-  .modal-backdrop { align-items: flex-start; padding: 0.7rem; }
-  .project-modal { max-height: calc(100svh - 1.4rem); padding: 1.4rem 1.15rem 1.7rem; }
+  .modal-backdrop { align-items: center; padding: 0.7rem; }
+  .project-modal { max-height: calc(100dvh - 2.5rem); padding: 1.4rem 1.15rem 1.7rem; }
   .modal-close { top: 1rem; right: 1rem; width: 37px; height: 37px; }
   .modal-eyebrow { margin-right: 3rem; font-size: 0.56rem; }
   .project-modal > h2 { font-size: clamp(2.35rem, 11vw, 3.2rem); }
@@ -2153,4 +2154,13 @@ a:focus-visible {
   .binary-game-heading,
   .binary-rules,
   .binary-instructions { padding-inline: 0.5rem; }
+}
+
+@media (max-width: 760px) {
+  .project-card {
+    padding: 1rem;
+    border: 1px solid var(--line-strong);
+    background: rgb(255 255 255 / 2%);
+  }
+  .project-card::before { inset: 0; }
 }

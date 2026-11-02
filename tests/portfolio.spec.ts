@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('shows the main portfolio heading and four projects', async ({ page }) => {
-  await expect(page.getByRole('heading', { level: 1, name: 'BUILDING AI PRODUCTS. IDEA TO LAUNCH.' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'BUILDING AI PRODUCTS. FROM IDEA TO LAUNCH.' })).toBeVisible();
 
   const projectButtons = page.getByRole('button', { name: /Open .* project details/ });
   await expect(projectButtons).toHaveCount(4);
@@ -258,8 +258,8 @@ test('header remains visible and section links scroll below it', async ({ page }
 });
 
 
-test('hero keeps its two-line layout and section subtitles sit below titles', async ({ page }) => {
-  await expect(page.locator('.hero-title-line')).toHaveText(['BUILDING AI PRODUCTS.', 'IDEA TO LAUNCH.']);
+test('hero shows the updated headline and section subtitles sit below titles', async ({ page }) => {
+  await expect(page.locator('.hero-title-line')).toHaveText(['BUILDING AI PRODUCTS.', 'FROM IDEA TO LAUNCH.']);
   for (const [id, subtitle] of [['overview', '.section-description'], ['work', '.section-heading > p'], ['experience', '.section-heading > p'], ['contact', '.contact-description']]) {
     const section = page.locator(`section#${id}`);
     await section.scrollIntoViewIfNeeded();
@@ -285,6 +285,26 @@ test('capability panel follows the orb only on mobile', async ({ page }) => {
     } else {
       expect(panel!.x + panel!.width).toBeLessThanOrEqual(visual!.x);
       expect(panel!.y).toBeGreaterThan(actions!.y);
+    }
+  }
+});
+
+test('mobile projects have borders and vertically centered scrollable dialogs', async ({ page }) => {
+  for (const width of [360, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    const cards = page.locator('.project-grid .project-card');
+    await expect(cards).toHaveCount(4);
+    for (const card of await cards.all()) {
+      expect(await card.evaluate(el => getComputedStyle(el).borderTopStyle)).toBe('solid');
+      await card.click();
+      const dialog = page.getByRole('dialog');
+      await expect(dialog).toBeVisible();
+      await expect.poll(async () => {
+        const bounds = (await dialog.boundingBox())!;
+        return Math.abs(bounds.y + bounds.height / 2 - 422);
+      }).toBeLessThan(2);
+      expect(await dialog.evaluate(el => el.scrollHeight > el.clientHeight)).toBe(true);
+      await page.getByRole('button', { name: 'Close project details' }).click();
     }
   }
 });
