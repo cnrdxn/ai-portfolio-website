@@ -1389,8 +1389,10 @@ a:focus-visible {
   }
   .mobile-nav a:last-child { border-bottom: 0; color: var(--cyan); }
   .hero { min-height: auto; padding-top: 48px; padding-bottom: 1.4rem; }
-  .hero-grid { flex: 0 0 auto; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-  .hero-copy { padding-bottom: 0; }
+  .hero-grid { flex: 0 0 auto; grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .hero-copy { display: contents; }
+  .hero-visual { grid-row: 5; }
+  .hero-grid .capability-panel-slot { grid-row: 6; }
 
   .hero-title { font-size: clamp(2.3rem, 11.5vw, 5.175rem); }
   .hero-description { max-width: 500px; margin-top: 1.5rem; }

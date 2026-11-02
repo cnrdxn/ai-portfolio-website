@@ -106,7 +106,7 @@ test('desktop and mobile layouts have no horizontal overflow after fonts load', 
     expect(dimensions.body, `body overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
     const headingFits = await page.locator('.hero-title-line').evaluateAll(elements => elements.every(element => {
       const line = element.getBoundingClientRect();
-      const column = element.closest('.hero-copy')!.getBoundingClientRect();
+      const column = element.closest('.hero-title')!.getBoundingClientRect();
       return line.left >= column.left - 1 && line.right <= column.right + 1;
     }));
     expect(headingFits, `headline clipped at ${width}px`).toBe(true);
@@ -267,5 +267,24 @@ test('hero keeps its two-line layout and section subtitles sit below titles', as
     const description = (await section.locator(subtitle).boundingBox())!;
     expect(description.y).toBeGreaterThanOrEqual(heading.y + heading.height);
     expect(Math.abs(description.x - heading.x)).toBeLessThan(1);
+  }
+});
+
+test('capability panel follows the orb only on mobile', async ({ page }) => {
+  for (const width of [360, 390, 760, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.evaluate(() => document.fonts.ready);
+    const visual = await page.locator('.hero-visual').boundingBox();
+    const panel = await page.locator('#capability-details').boundingBox();
+    const actions = await page.locator('.hero-actions').boundingBox();
+    expect(visual).not.toBeNull();
+    expect(panel).not.toBeNull();
+    if (width <= 760) {
+      expect(panel!.y).toBeGreaterThanOrEqual(visual!.y + visual!.height);
+      expect(visual!.y).toBeGreaterThanOrEqual(actions!.y + actions!.height);
+    } else {
+      expect(panel!.x + panel!.width).toBeLessThanOrEqual(visual!.x);
+      expect(panel!.y).toBeGreaterThan(actions!.y);
+    }
   }
 });
