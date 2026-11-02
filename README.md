@@ -77,3 +77,7 @@ PLAYWRIGHT_CHANNEL=chromium npm test
 ```
 
 The test suite covers navigation, project dialogs, orb interactions, responsive layouts, puzzle rules, keyboard controls, and touch input at phone widths.
+
+## Production deployment
+
+Pushes to `main` deploy verified builds to https://connorddixon.com after the one-time server and GitHub setup. See [deployment instructions](deploy/README.md) for the dedicated SSH account, secrets, host key verification, release checks, and rollback. Routine deployments preserve the Caddy service and HTTPS configuration.

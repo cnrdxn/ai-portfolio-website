@@ -1,0 +1,118 @@
+name: Deploy portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never cancel a running SSH activation. Only one pending run is retained.
+concurrency:
+  group: portfolio-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == 'cnrdxn/ai-portfolio-website' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://connorddixon.com
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Check deployment logic
+        run: python3 -m unittest discover -s deploy/tests -v
+      - name: Build and typecheck
+        run: npm run build
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+      - name: Test portfolio and phone layouts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run dev >"$RUNNER_TEMP/vite.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          ready=false
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:5173/ >/dev/null; then
+              ready=true
+              break
+            fi
+            sleep 1
+          done
+          if [[ $ready != true ]]; then cat "$RUNNER_TEMP/vite.log"; exit 1; fi
+          npm test
+      - name: Prepare verified release contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 deploy/build-manifest.py dist "$GITHUB_SHA" "$GITHUB_RUN_NUMBER"
+          echo "RELEASE_ID=gha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_SHA:0:12}" >> "$GITHUB_ENV"
+      - name: Configure dedicated SSH identity and pinned host key
+        env:
+          DEPLOY_KEY: ${{ secrets.PORTFOLIO_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.PORTFOLIO_SSH_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$DEPLOY_KEY" && test -n "$KNOWN_HOSTS"
+          umask 077
+          install -d -m 700 "$RUNNER_TEMP/portfolio-ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$RUNNER_TEMP/portfolio-ssh/key"
+          printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/portfolio-ssh/known_hosts"
+          ssh-keygen -y -f "$RUNNER_TEMP/portfolio-ssh/key" >/dev/null
+          ssh-keygen -F 50.116.29.28 -f "$RUNNER_TEMP/portfolio-ssh/known_hosts" >/dev/null
+          cat > "$RUNNER_TEMP/portfolio-ssh/config" <<EOF
+          Host portfolio-production
+            HostName 50.116.29.28
+            Port 22
+            User portfolio-deploy
+            IdentityFile $RUNNER_TEMP/portfolio-ssh/key
+            UserKnownHostsFile $RUNNER_TEMP/portfolio-ssh/known_hosts
+            StrictHostKeyChecking yes
+            IdentitiesOnly yes
+            BatchMode yes
+            ForwardAgent no
+            ConnectTimeout 15
+          EOF
+      - name: Upload dist and activate if still current main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          require_main_head() {
+            head_sha=$(gh api repos/cnrdxn/ai-portfolio-website/git/ref/heads/main \
+              -H 'Cache-Control: no-cache' --jq '.object.sha')
+            if [[ "$head_sha" != "$GITHUB_SHA" ]]; then
+              echo 'This build has been superseded on main; refusing deployment.' >&2
+              exit 1
+            fi
+          }
+          require_main_head
+          ssh -F "$RUNNER_TEMP/portfolio-ssh/config" portfolio-production \
+            "/usr/local/bin/portfolio-release prepare $RELEASE_ID"
+          # The trailing slash copies only dist contents, never source or credentials.
+          rsync -rlt --chmod=D755,F644 \
+            -e "ssh -F $RUNNER_TEMP/portfolio-ssh/config" \
+            dist/ "portfolio-production:/var/www/portfolio/releases/$RELEASE_ID/"
+          require_main_head
+          ssh -F "$RUNNER_TEMP/portfolio-ssh/config" portfolio-production \
+            "/usr/local/bin/portfolio-release activate $RELEASE_ID $GITHUB_SHA $GITHUB_RUN_NUMBER"
+          echo "Deployed $GITHUB_SHA as $RELEASE_ID" >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove SSH credentials
+        if: always()
+        shell: bash
+        run: rm -rf -- "$RUNNER_TEMP/portfolio-ssh"
