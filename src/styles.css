@@ -1767,3 +1767,388 @@ a:focus-visible {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Playable Binary puzzle in the contact panel */
+.contact-panel.contact-panel--play {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 5rem);
+  padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.contact-panel.contact-panel--play .contact-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-self: center;
+  gap: 1.8rem;
+}
+
+.contact-panel.contact-panel--play .contact-copy > .eyebrow,
+.contact-panel.contact-panel--play .contact-copy > h2,
+.contact-panel.contact-panel--play .contact-copy > .contact-description,
+.contact-panel.contact-panel--play .contact-copy > .contact-actions,
+.contact-panel.contact-panel--play .contact-copy > .contact-email {
+  grid-column: auto;
+}
+
+.binary-game {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+  width: min(100%, 500px);
+  justify-self: end;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  border: 1px solid rgb(87 229 231 / 26%);
+  background:
+    linear-gradient(145deg, rgb(87 229 231 / 5%), transparent 48%),
+    rgb(13 21 22 / 78%);
+  box-shadow: inset 0 1px rgb(255 255 255 / 3%), 0 16px 40px rgb(0 0 0 / 18%);
+}
+
+.binary-game-heading {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.binary-game-kicker {
+  color: var(--cyan);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.57rem;
+  letter-spacing: 0.1em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.binary-game-heading h3 {
+  margin: 0.1rem 0 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.binary-game-intro {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.binary-rules {
+  padding: 0.65rem 0.75rem;
+  border-left: 1px solid rgb(87 229 231 / 48%);
+  background: rgb(255 255 255 / 2%);
+}
+
+.binary-rules > p {
+  margin: 0;
+  color: #c3cecb;
+  font-size: 0.81rem;
+  line-height: 1.55;
+}
+
+.binary-difficulties {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.binary-difficulty {
+  display: flex;
+  min-width: 0;
+  min-height: 46px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.08rem;
+  padding: 0.35rem 0.25rem;
+  border: 1px solid var(--line);
+  background: rgb(255 255 255 / 1.5%);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.binary-difficulty > span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.61rem;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.binary-difficulty > small {
+  color: var(--quiet);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.binary-difficulty:hover,
+.binary-difficulty[aria-pressed='true'] {
+  border-color: rgb(87 229 231 / 65%);
+  background: rgb(87 229 231 / 8%);
+  color: var(--cyan);
+}
+
+.binary-difficulty[aria-pressed='true'] > small {
+  color: #b8dedb;
+}
+
+.binary-toolbar {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.binary-progress {
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.binary-rules-toggle {
+  padding: 0.25rem 0;
+  background: transparent;
+  color: var(--cyan);
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+  text-decoration-color: rgb(87 229 231 / 38%);
+  text-underline-offset: 3px;
+}
+
+.binary-board {
+  display: grid;
+  width: 100%;
+  max-width: 420px;
+  grid-template-columns: repeat(var(--board-size), minmax(24px, 1fr));
+  grid-auto-rows: minmax(24px, 1fr);
+  gap: 4px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 0.45rem;
+  border: 1px solid var(--line-strong);
+  background: rgb(0 0 0 / 14%);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.binary-board.is-solved {
+  border-color: rgb(87 229 231 / 72%);
+  box-shadow: 0 0 20px rgb(87 229 231 / 12%), inset 0 0 18px rgb(87 229 231 / 4%);
+}
+
+.binary-row {
+  display: contents;
+}
+
+.binary-cell {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 24px;
+  min-height: 24px;
+  aspect-ratio: 1;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(87 229 231 / 24%);
+  background: rgb(87 229 231 / 3%);
+  color: #b9f6f3;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.binary-cell.is-zero {
+  color: #a7e4e0;
+}
+
+.binary-cell.is-one {
+  color: #f0f1e9;
+}
+
+.binary-cell:not(:disabled):hover {
+  border-color: var(--cyan);
+  background: rgb(87 229 231 / 12%);
+}
+
+.binary-cell:focus-visible,
+.binary-difficulty:focus-visible,
+.binary-controls > button:focus-visible,
+.binary-rules-toggle:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.binary-cell.is-given {
+  border-color: rgb(87 229 231 / 15%);
+  background: rgb(241 240 233 / 4%);
+  color: #b1bfbc;
+  cursor: default;
+}
+
+.binary-cell.is-given::after {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgb(87 229 231 / 58%);
+  content: '';
+}
+
+.binary-cell.is-conflict {
+  border-color: #d49a73;
+  background: rgb(212 154 115 / 10%);
+  color: #efc2a4;
+  box-shadow: inset 0 0 0 1px rgb(212 154 115 / 22%);
+}
+
+.binary-cell.is-selected {
+  border-color: var(--cyan);
+  background: rgb(87 229 231 / 12%);
+  box-shadow: inset 0 0 0 1px rgb(87 229 231 / 36%), 0 0 9px rgb(87 229 231 / 16%);
+}
+
+.binary-cell:disabled {
+  opacity: 1;
+  -webkit-text-fill-color: currentColor;
+}
+
+.binary-status {
+  display: flex;
+  min-height: 2.9rem;
+  align-items: center;
+  padding: 0.55rem 0.7rem;
+  border-left: 2px solid rgb(87 229 231 / 55%);
+  background: rgb(87 229 231 / 4%);
+  color: #cfddda;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.binary-status.has-conflicts {
+  border-left-color: #d49a73;
+  background: rgb(212 154 115 / 6%);
+  color: #e3c3ae;
+}
+
+.binary-status.is-solved {
+  border-left-color: var(--cyan);
+  background: rgb(87 229 231 / 8%);
+  color: #d9ffff;
+}
+
+.binary-instructions {
+  display: block;
+  margin: 0;
+  color: var(--quiet);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.binary-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.binary-controls > button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid var(--line-strong);
+  background: rgb(255 255 255 / 2%);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.59rem;
+  letter-spacing: 0.025em;
+  line-height: 1.3;
+  text-align: center;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.binary-controls > button:hover:not(:disabled) {
+  border-color: var(--cyan);
+  background: rgb(87 229 231 / 7%);
+  color: var(--ink);
+}
+
+.binary-controls > button.is-primary {
+  border-color: rgb(87 229 231 / 50%);
+  color: var(--cyan);
+}
+
+.binary-controls > button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+@media (max-width: 1000px) {
+  .contact-panel.contact-panel--play {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .binary-game {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 540px) {
+  .contact-panel.contact-panel--play {
+    gap: 1.5rem;
+    padding: 1rem 0.75rem 1.25rem;
+  }
+
+  .contact-panel.contact-panel--play .contact-copy {
+    gap: 1.25rem;
+  }
+
+  .binary-game {
+    padding: 0.65rem;
+  }
+
+  .binary-board {
+    gap: 3px;
+    padding: 0.3rem;
+  }
+
+  .binary-controls {
+    gap: 0.3rem;
+  }
+
+  .binary-controls > button {
+    min-height: 42px;
+    padding-inline: 0.25rem;
+    font-size: 0.56rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .binary-board { gap: 2px; padding: 2px; }
+}
+
+@media (max-width: 340px) {
+  .contact-panel.contact-panel--play { padding-inline: 0.25rem; }
+  .binary-game { padding: 0.85rem 0; }
+  .binary-game-heading,
+  .binary-rules,
+  .binary-instructions { padding-inline: 0.5rem; }
+}
