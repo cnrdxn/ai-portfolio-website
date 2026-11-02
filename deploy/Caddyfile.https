@@ -1,0 +1,24 @@
+{
+	admin off
+}
+
+connorddixon.com {
+	root * /var/www/portfolio/current
+	encode zstd gzip
+	try_files {path} /index.html
+	file_server
+	log
+}
+
+www.connorddixon.com {
+	redir https://connorddixon.com{uri} permanent
+}
+
+# Keep direct access by IP and the installer's local HTTP check working.
+:80 {
+	root * /var/www/portfolio/current
+	encode zstd gzip
+	try_files {path} /index.html
+	file_server
+	log
+}

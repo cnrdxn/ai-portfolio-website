@@ -1,0 +1,12 @@
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	root * /var/www/portfolio/current
+	encode zstd gzip
+	try_files {path} /index.html
+	file_server
+	log
+}
