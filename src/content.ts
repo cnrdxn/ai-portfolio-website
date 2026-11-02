@@ -140,7 +140,7 @@ export const profile = {
   name: 'Connor Dixon',
   title: 'Lead AI Systems Engineer',
   location: 'Denver, Colorado',
-  email: 'connorddixon@gmail.com',
+  email: 'comms@connorddixon.com',
   linkedin: 'https://www.linkedin.com/in/connorddixon/',
   intro:
     'I’m Connor Dixon, a Lead AI Systems Engineer in Denver. I build production AI products from architecture through deployment, grounded in a data science and software engineering background.',

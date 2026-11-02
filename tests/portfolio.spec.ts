@@ -51,7 +51,7 @@ test('contact links point to the supplied email and LinkedIn profile', async ({ 
 
   expect(await emailLinks.count()).toBeGreaterThan(0);
   for (let index = 0; index < await emailLinks.count(); index += 1) {
-    await expect(emailLinks.nth(index)).toHaveAttribute('href', 'mailto:connorddixon@gmail.com');
+    await expect(emailLinks.nth(index)).toHaveAttribute('href', 'mailto:comms@connorddixon.com');
   }
 
   expect(await linkedInLinks.count()).toBeGreaterThan(0);
