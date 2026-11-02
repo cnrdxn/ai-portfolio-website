@@ -46,7 +46,7 @@ The production build is written to `dist/`. Preview it at http://127.0.0.1:4173.
 | `src/components/HouseButlerDiagram.tsx` | House Butler architecture illustration |
 | `src/components/BinaryGame.tsx` | Puzzle interface and player interactions |
 | `src/games/binary.ts` | Puzzle generation and rule validation |
-| `public/connor-mark.svg` | Browser tab icon |
+| `public/connor-mark.png` | Transparent browser tab icon |
 | `index.html` | Browser title and page metadata |
 
 ## Tests
