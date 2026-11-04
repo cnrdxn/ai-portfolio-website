@@ -4,6 +4,7 @@ import { capabilities } from '../capabilities'
 import { AnimatedNeurons } from './AnimatedNeurons'
 import { HouseButlerDiagram } from './HouseButlerDiagram'
 import { ResumeProjectDiagram } from './ResumeProjectDiagram'
+import { ProjectReferences } from './ProjectReferences'
 
 export function SystemDiagram() {
   const id = useId().replaceAll(':', '')
@@ -64,7 +65,11 @@ export function SystemDiagram() {
     aria-label={`${active.title} experience`}
   >
     <div className="capability-popover-top"><span className="capability-popover-index">CAPABILITY / {String(activeIndex! + 1).padStart(2, '0')}</span><button className="capability-popover-close" aria-label="Close capability details" onClick={close}>×</button></div>
-    <h3>{active.title}</h3><p>{active.description}</p>
+    <h3>{active.title}</h3>
+    <ul className="capability-examples" aria-label={`${active.title} examples`}>{active.examples.map(example => <li key={example.title}>
+      <a className="capability-example-title project-reference" href={example.href}>{example.title} <span aria-hidden="true">↗</span></a>
+      <p><ProjectReferences text={example.body} /></p>
+    </li>)}</ul>
     <div className="capability-pills">{active.skills.map(skill => <span key={skill}>{skill}</span>)}</div>
     <div className="capability-popover-bottom">EXPERIENCE / CONNOR DIXON</div>
   </aside> : <aside className="capability-popover capability-popover--docked capability-popover--prompt" aria-label="Explore the orb">
@@ -73,7 +78,7 @@ export function SystemDiagram() {
     <p>Drag the orb to rotate it. Hover over a capability to see my experience.</p>
     <div className="capability-popover-bottom">TAP A CAPABILITY ON TOUCH SCREENS</div>
   </aside>
-  return <div className="neural-system"><svg className="system-diagram" viewBox="0 0 760 760" role="group" aria-label="Explore Connor’s experience using the rotating capability neurons or their labels">
+  return <div className="neural-system"><svg className="system-diagram" viewBox="20 70 720 620" preserveAspectRatio="xMidYMin meet" role="group" aria-label="Explore Connor’s experience using the rotating capability neurons or their labels">
     <defs>
       <radialGradient id={`${id}-halo`}>
         <stop offset="0%" stopColor="#57e5e7" stopOpacity=".14" />

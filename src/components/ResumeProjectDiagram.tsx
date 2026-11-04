@@ -79,14 +79,14 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
           <text x="90" y="165" fontSize="9" letterSpacing=".55">TECHNICIAN NOTES</text>
           <text x="90" y="182" fontSize="7" letterSpacing=".25" opacity=".65">FREE-TEXT ISSUES</text>
           <text x="300" y="159" fontSize="8.5" letterSpacing=".4">BATCH INFERENCE</text>
-          <text x="300" y="174" fontSize="6.5" letterSpacing=".15" opacity=".68">BATCH · ~316K</text>
+          <text x="300" y="174" fontSize="6.5" letterSpacing=".15" opacity=".68">PRODUCTION BATCH</text>
           <text x="300" y="186" fontSize="6.5" letterSpacing=".15" opacity=".68">CLASSIFICATIONS</text>
           <text x="510" y="165" fontSize="8.5" letterSpacing=".35">ISSUE CATEGORIES</text>
           <text x="510" y="182" fontSize="7" letterSpacing=".2" opacity=".65">CATEGORICAL SCORES</text>
           <text x="279" y="278" fontSize="8.5" letterSpacing=".55">CHECKPOINT STATE</text>
           <text x="279" y="294" fontSize="6.5" letterSpacing=".15" opacity=".7">RESUME IN-FLIGHT · NO RESUBMIT</text>
           <text x="483" y="278" fontSize="8.5" letterSpacing=".55">HUMAN REVIEW</text>
-          <text x="483" y="294" fontSize="7" letterSpacing=".2" opacity=".68">~10% OF TOPICS REFINED</text>
+          <text x="483" y="294" fontSize="7" letterSpacing=".2" opacity=".68">REFINEMENT WHERE NEEDED</text>
           <text x="516" y="235" fontSize="6.5" letterSpacing=".45" opacity=".65">AMBIGUOUS</text>
         </g>
       </> : fraud ? <>
@@ -94,8 +94,8 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
         <path d={`M90 145V113H510V145`} fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 4" markerEnd={`url(#${id}-arrow)`} opacity=".8" />
         <rect x="190" y="49" width="220" height="48" rx="2" fill="currentColor" fillOpacity=".035" stroke="currentColor" strokeWidth="1" />
         <g fill="currentColor" fontFamily="monospace" textAnchor="middle">
-          <text x="300" y="68" fontSize="9" letterSpacing=".55">10+ PRODUCTION PIPELINES</text>
-          <text x="300" y="83" fontSize="6.8" letterSpacing=".15" opacity=".68">VERSION 2 · SUBJECTS ANALYZED +106%</text>
+          <text x="300" y="68" fontSize="9" letterSpacing=".55">PRODUCTION PIPELINES</text>
+          <text x="300" y="83" fontSize="6.8" letterSpacing=".15" opacity=".68">EXPANDED ANALYSIS COVERAGE</text>
         </g>
 
         <path d={`M156 176H234`} fill="none" stroke="currentColor" strokeWidth="1.2" markerEnd={`url(#${id}-arrow)`} />
@@ -118,15 +118,15 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
           <text x="300" y="191" fontSize="6.5" letterSpacing=".15" opacity=".63">MODEL PIPELINE</text>
           <text x="510" y="168" fontSize="8.2" letterSpacing=".25">FLAGGED ACCOUNTS</text>
           <text x="510" y="185" fontSize="7" letterSpacing=".15" opacity=".65">REVENUE LEAKAGE</text>
-          <text x="300" y="278" fontSize="8.5" letterSpacing=".5">VERSION 1 · ~100 ACCOUNTS IDENTIFIED</text>
-          <text x="300" y="294" fontSize="7" letterSpacing=".25" opacity=".68">$350K+ ANNUAL REVENUE RECOVERY</text>
+          <text x="300" y="278" fontSize="8.5" letterSpacing=".5">REVENUE-LEAKAGE ACCOUNTS IDENTIFIED</text>
+          <text x="300" y="294" fontSize="7" letterSpacing=".25" opacity=".68">REVENUE RECOVERY</text>
         </g>
       </> : <>
         {/* Context feeds follow-up routing; the four-stage retrieval path stays explicit. */}
         <path d={`M224 98V142`} fill="none" stroke="currentColor" strokeWidth="1.05" strokeDasharray="3 3" markerEnd={`url(#${id}-arrow)`} />
         <path d="M224 98V119H509V141" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" opacity=".55" markerEnd={`url(#${id}-arrow)`} />
         <path d={`M134 172H164M278 172H308M422 172H452`} fill="none" stroke="currentColor" strokeWidth="1.2" markerEnd={`url(#${id}-arrow)`} />
-        {/* The 100-case judge benchmark is a release gate, not a runtime answer stage. */}
+        {/* The judge benchmark is a release gate, not a runtime answer stage. */}
         <path d={`M509 205V231H300V249`} fill="none" stroke="currentColor" strokeWidth="1.05" strokeDasharray="3 4" markerEnd={`url(#${id}-arrow)`} />
 
         <g fill="currentColor" fillOpacity=".035" stroke="currentColor" strokeWidth="1.1">
@@ -150,8 +150,8 @@ export function ResumeProjectDiagram({ kind }: { kind: string }) {
           <text x="365" y="184" fontSize="7" letterSpacing=".2" opacity=".65">SOURCE DOCUMENTS</text>
           <text x="509" y="168" fontSize="8" letterSpacing=".15">GROUNDED ANSWER</text>
           <text x="509" y="184" fontSize="7" letterSpacing=".2" opacity=".65">ANSWER / DECLINE</text>
-          <text x="300" y="270" fontSize="8.5" letterSpacing=".55">LLM-AS-JUDGE · 100 CASES</text>
-          <text x="300" y="286" fontSize="6.4" letterSpacing=".1" opacity=".68">RELEASE GATE · &gt;90% QUALITY · 98% ANSWER / DECLINE</text>
+          <text x="300" y="270" fontSize="8.5" letterSpacing=".55">LLM-AS-JUDGE EVALUATION</text>
+          <text x="300" y="286" fontSize="6.4" letterSpacing=".1" opacity=".68">QUALITY &amp; ANSWER-OR-DECLINE CHECKS</text>
         </g>
       </>}
 

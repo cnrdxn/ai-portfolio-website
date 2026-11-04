@@ -155,11 +155,15 @@ test('each capability opens the same detail panel from its label and its neuron'
     await expect(panel).toBeVisible();
     const title = await panel.locator('h3').innerText();
     await expect(panel.locator('.capability-pills > span')).toHaveCount(3);
-    expect((await panel.locator(':scope > p').innerText()).length).toBeGreaterThan(20);
+    const examples = panel.getByRole('list', { name: `${title} examples` }).getByRole('listitem');
+    await expect(examples).toHaveCount(2);
+    const exampleText = await examples.allTextContents();
+    for (const example of await examples.all()) await expect(example).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(panel).toBeHidden();
     await neurons.nth(index).hover();
     await expect(panel.locator('h3')).toHaveText(title);
+    await expect(panel.getByRole('listitem')).toHaveText(exampleText);
     await page.keyboard.press('Escape');
     await expect(panel).toBeHidden();
   }
@@ -182,6 +186,34 @@ test('capability details support keyboard and mobile tap', async ({ page }) => {
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
   await page.getByRole('button', { name: 'Close capability details' }).click();
   await expect(panel).toBeHidden();
+});
+
+test('capability evidence links reach the exact project or experience on desktop and mobile', async ({ page }) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    for (const [capability, name, target] of [
+      ['AI systems', 'Enterprise AI Answers Service', 'project-enterprise-ai'],
+      ['AI systems', 'Iterative Topic Resolver', 'project-iterative-topic-resolver'],
+      ['Data science', 'WiFi Sharing Fraud Detection', 'project-wifi-fraud-detection'],
+      ['Data science', 'Data pipelines and forecasting', 'experience-data-science'],
+      ['Software engineering', 'House Butler', 'project-house-butler'],
+    ]) {
+      await page.goto('/');
+      await page.getByRole('button', { name: `Explore ${capability}`, exact: true }).click();
+      const panel = page.getByRole('complementary', { name: `${capability} experience` });
+      await panel.getByRole('link', { name, exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`#${target}$`));
+      await expect.poll(() => page.locator(`#${target}`).evaluate(element => {
+        const rect = element.getBoundingClientRect();
+        return rect.top >= document.querySelector('header')!.getBoundingClientRect().bottom && rect.top < innerHeight;
+      })).toBe(true);
+      if (target.startsWith('project-')) {
+        await page.locator(`#${target}`).press('Enter');
+        await expect(page.getByRole('dialog').getByRole('heading', { name, exact: true })).toBeVisible();
+        await page.keyboard.press('Escape');
+      }
+    }
+  }
 });
 
 test('orb supports dragging and release outside its bounds, then resumes idle motion', async ({ page }) => {
